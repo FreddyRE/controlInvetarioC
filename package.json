@@ -1,10 +1,11 @@
 {
-  "name": "electron-quick-start",
+  "name": "control-inventario",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Control inventario",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager . ControlInventarios && cp icon.icns ControlInventarios-darwin-x64/ControlInventarios.app/Contents/Resources/electron.icns"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -14,9 +15,14 @@
     "tutorial",
     "demo"
   ],
-  "author": "GitHub",
+  "author": "Freddy Romero",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^2.0.0"
+    "electron": "^2.0.0",
+    "electron-packager": "^12.1.2"
+  },
+  "dependencies": {
+    "bootstrap": "^4.1.3",
+    "mysql": "^2.16.0"
   }
 }
