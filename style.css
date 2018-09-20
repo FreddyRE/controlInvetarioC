@@ -1,7 +1,8 @@
 body, html {
     height: 100%;
     background-repeat: no-repeat;
-    background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));
+    background-color: black
+    
 }
 
 .card-container.card {
@@ -133,3 +134,124 @@ body, html {
 .forgot-password:focus{
     color: rgb(12, 97, 33);
 }
+
+
+.output{
+
+    width: 100%;
+    margin: auto;
+    background-color: gray;
+    padding: 20px;
+
+}
+
+
+h2 {
+    text-align: center;
+    color: white;
+    
+}
+
+table {
+    width: 100%;
+    border-bottom: 1px solid white;
+    overflow: scroll;
+
+}
+th {
+    border-bottom: 1px solid white;
+    color: black; 
+    text-align: center;
+    background-color: lightgray;
+}
+
+td{
+    color: black;
+    text-align: center;
+}
+
+span{
+    color: white;
+    width: 100%
+}
+
+.row-data {
+    background-color: white;
+    border-bottom: 1px solid gray;
+}
+
+.botton-span-editar {
+
+    background-color: #42a1f4;
+    margin: 1px;
+
+}
+
+.botton-span-editar:hover {
+
+    background-color: gray;
+    cursor: pointer;
+   
+
+}
+
+.botton-span-borrar {
+
+    background-color: #c95252;
+    margin: 1px;
+
+  
+}
+
+.botton-span-borrar:hover{
+
+    background-color: gray;
+    cursor: pointer;
+  
+}
+
+.welcome-administrator {
+    
+    color: white;
+    text-align: right;
+    padding: 10px;
+    background-color: #695f77;
+}
+
+a:link{
+    color: white;
+}
+
+a:visited{
+    color: white;
+}
+
+#add-element-button {
+    background-color: green;
+    color: white;
+    text-align: center;
+    float: left;
+    text-align: center;
+    font-size: 12px;
+    width:80%;
+    border-left:15px solid white;
+ 
+}
+
+
+#add-element-button:hover {
+    background-color: gray;
+    cursor: pointer;
+}
+
+#row-new-element {
+    border: 1px solid gray;
+}
+
+#new-dataBtn-td {
+    padding-right: 20px; 
+    padding-top: 10px;
+
+}
+
+
