@@ -204,6 +204,11 @@
         buttonNodeEditar.appendChild(spanNode);
         spanNode.className = "botton-span-editar";
         spanNode.id = "editar-"+data[i].ID;
+        nodeCategoria.id = "categ-"+data[i].ID;
+        //nodeDescripcion.id = "descrip-"+data[i].ID;
+        //nodeCantidad.id = "cantidad-"+data[i].ID;
+        //nodeRecompra.id = "recompra-"+data[i].ID;
+
         spanNode.addEventListener("click", function(event) {
           editarElemento(event);
         });
@@ -343,6 +348,97 @@
     function editarElemento(e){
 
 
+      var idsElementosTabla = [];
+
+      var numeroElementosTabla = document.getElementById('table-output').children.length-2;
+
+
+      for (var i = 1; i <= numeroElementosTabla; i++) {
+        var textToVerify = document.getElementById('table-output').children[i].innerHTML;
+        var indexOfTextToVerify = textToVerify.indexOf('id="');
+        var subtringTextToVerify = textToVerify.substring(indexOfTextToVerify+10);
+        var subtringTextToVerify2 = subtringTextToVerify.substring(0, subtringTextToVerify.indexOf('"'));
+
+        idsElementosTabla.push(subtringTextToVerify2);
+      }
+
+      for (var z = 0; z < idsElementosTabla.length; z++) {
+        
+        if(e.target.id.substring(7) === idsElementosTabla[z]){
+
+          var idToCheck = e.target.id.substring(7)
+          
+          var rowToUpdate = document.getElementById('table-output').children[z+1];
+          var tdCategoriaUpdate = document.createElement("td");
+          var valueFromCategoriaBefore = rowToUpdate.children[1].innerHTML;
+          var nodeTextFieldCategoria = document.createElement('input');
+          nodeTextFieldCategoria.value = valueFromCategoriaBefore;
+          nodeTextFieldCategoria.id = "nodeTextCat";
+          tdCategoriaUpdate.appendChild(nodeTextFieldCategoria);
+          rowToUpdate.removeChild(rowToUpdate.children[1]);
+          rowToUpdate.insertBefore(tdCategoriaUpdate, rowToUpdate.childNodes[1]);
+
+          var tdProductoUpdate = document.createElement("td");
+          var valueFromProductoBefore = rowToUpdate.children[2].innerHTML;
+          var nodeTextFieldProducto = document.createElement('input');
+          nodeTextFieldProducto.value = valueFromProductoBefore;
+          nodeTextFieldProducto.id = "nodeTextFielProd";
+          tdProductoUpdate.appendChild(nodeTextFieldProducto);
+          rowToUpdate.removeChild(rowToUpdate.children[2]);
+          rowToUpdate.insertBefore(tdProductoUpdate, rowToUpdate.childNodes[2]);
+          
+          var tdCantidadUpdate = document.createElement("td");
+          var valueFromCantidadBefore = rowToUpdate.children[3].innerHTML;
+          var nodeTextFieldCantidad = document.createElement('input');
+          nodeTextFieldCantidad.value = valueFromCantidadBefore;
+          nodeTextFieldCantidad.id = "nodeTextFieldCant";
+          tdCantidadUpdate.appendChild(nodeTextFieldCantidad);
+          rowToUpdate.removeChild(rowToUpdate.children[3]);
+          rowToUpdate.insertBefore(tdCantidadUpdate, rowToUpdate.childNodes[3]);
+
+          var tdRecompraUpdate = document.createElement("td");
+          var valueFromRecompraBefore = rowToUpdate.children[4].innerHTML;
+          var nodeTextFieldRecompra = document.createElement('input');
+          nodeTextFieldRecompra.value = valueFromRecompraBefore;
+          nodeTextFieldRecompra.id = "nodeTexFieldRec";
+          tdRecompraUpdate.appendChild(nodeTextFieldRecompra);
+          rowToUpdate.removeChild(rowToUpdate.children[4]);
+          rowToUpdate.insertBefore(tdRecompraUpdate, rowToUpdate.childNodes[4]);
+
+          var tdBotonAcepatarUpdate = document.createElement("td");
+          var BotonAceptarNode = document.createElement('span');
+          var botonTextNodeAceptar = document.createTextNode("Aceptar");
+          BotonAceptarNode.appendChild(botonTextNodeAceptar);
+          BotonAceptarNode.setAttribute("class", "Btn-Aceptar");
+          BotonAceptarNode.addEventListener("click", function(){
+            updateCambios(idToCheck);
+          });
+          tdBotonAcepatarUpdate.appendChild(BotonAceptarNode);
+          rowToUpdate.removeChild(rowToUpdate.children[5]);
+          rowToUpdate.insertBefore(tdBotonAcepatarUpdate, rowToUpdate.childNodes[5]);
+         
+          var tdBotonCancelarUpdate = document.createElement("td");
+          var BotonCancelarNode = document.createElement('span');
+          var botonTextNodeCancelar = document.createTextNode("Cancelar");
+          BotonCancelarNode.appendChild(botonTextNodeCancelar);
+          BotonCancelarNode.setAttribute("class", "Btn-cancelar");
+          BotonCancelarNode.addEventListener("click", function(){
+            refreshBrowser();
+          });
+          tdBotonCancelarUpdate.appendChild(BotonCancelarNode);
+          rowToUpdate.removeChild(rowToUpdate.children[6]);
+          rowToUpdate.insertBefore(tdBotonCancelarUpdate, rowToUpdate.childNodes[6]);
+
+        }
+      }
+      
+
+      //location.reload();  
+
+    }
+
+
+    function updateCambios(id) {
 
       var mySQL = require("mysql");
 
@@ -360,33 +456,7 @@
         }
       });
 
-      var idsElementosTabla = [];
-
-      var numeroElementosTabla = document.getElementById('table-output').children.length-2;
-
-
-      for (var i = 1; i <= numeroElementosTabla; i++) {
-        var textToVerify = document.getElementById('table-output').children[i].innerHTML;
-        var indexOfTextToVerify = textToVerify.indexOf('id="');
-        var subtringTextToVerify = textToVerify.substring(indexOfTextToVerify+11);
-        var subtringTextToVerify2 = subtringTextToVerify.substring(0, subtringTextToVerify.indexOf('"'));
-
-        idsElementosTabla.push(subtringTextToVerify2);
-      }
-
-      for (var z = 0; z < idsElementosTabla.length; z++) {
-        if(e.target.id.substring(7) === idsElementosTabla[z]){
-          console.log(z);
-        }
-      }
-      
-
-
-
-
-
-
-       $queryString = "UPDATE `inventario-actual` SET `ID`="+ e.target.id.substring(7)+",`categoria`='"+"updatedsdfdsfds"+"',`descripcion`='updated2',`cantidad`= 0,`fecha`='updated3',`puntoReaorden`=0 WHERE `ID` ="+e.target.id.substring(7)+"";
+       $queryString = "UPDATE `inventario-actual` SET `ID`="+ id+",`categoria`='"+document.getElementById("nodeTextCat").value+"',`descripcion`='"+document.getElementById('nodeTextFielProd').value+"',`cantidad`= "+document.getElementById('nodeTextFieldCant').value+",`fecha`='updated3',`puntoReaorden`="+document.getElementById("nodeTexFieldRec").value+" WHERE `ID` ="+id+"";
 
       connection.query($queryString, (err, rows, fields) => {
         if(err){
@@ -400,11 +470,12 @@
        
       });
 
-      //location.reload();  
-
+      location.reload();
     }
 
-
+    function refreshBrowser() {
+      location.reload();
+    }
 
     function borrarElemento(e){
       var resp = confirm("seguro que deseas borrar elemento?");
