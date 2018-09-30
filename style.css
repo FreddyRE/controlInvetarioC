@@ -269,7 +269,22 @@ a:visited{
 #new-dataBtn-td {
     padding-right: 20px; 
     padding-top: 10px;
-
 }
 
+select {
+    width: 100%;
+}
 
+#generar-reporte {
+    position: absolute;
+    background-color: black;
+    color:white;
+    padding: 5px
+}
+#generar-reporte:hover {
+    
+    background-color: darkgray;
+    color:black;
+    cursor: pointer;
+  
+}

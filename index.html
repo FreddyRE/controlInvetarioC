@@ -1,509 +1,867 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Control de Inventarios</title>
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
+<head>
+  <meta charset="UTF-8">
+  <title>Control de Inventarios</title>
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
 
-  </head>
-  <body>
+</head>
+<body>
+  <br>
 
-    
-    <div style="display: none" class="admin-container" id="display-elemets-container">
-      <div class="welcome-administrator">
-        <h5>Welcome Admin</h5>
-        <div id=cerrar-sesion>
-          <a href="#">Cerrar Sesion</a>
-        </div> 
-      </div>
-      <br>
-      <h2>Revision productos</h2>
-      
-      <div class="output">          
-          <table id="table-output">
-            <thead>
-              <tr>
-                <th width="15%">Fecha</th>
-                <th width="10%">Categoria</th>
-                <th width="25%">Producto</th>
-                <th width="20%">Cantidad</th>
-                <th width="10%">Recompra</th>
-                <th width="10%"></th>
-                <th width="10%"></th>
-              </tr>
-            </thead>
-           
-     
-          </table>
-  
-      </div>
-    </div>
-    
-      
-
-    <div class="container" id="login-container">
-      <div class="card card-container">
-        <img id="profile-img" class="profile-img-card" src="user-admin.png">
-        <p id="profile-name" class="profile-name-card"></p>
-        
-    
-        <form class="form-signin">
-          <span id="reauth-email" class="reauth-email"></span>
-          <input class="form-control" type="text" name="" placeholder="usuario" id="usurname_textField">
-          <input class="form-control" type="password" name="" placeholder="password" id="password_textField">
-          <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" id="btn-login">LogIn</button>
-        </form>
-      </div>
-      
+  <div class="login-container" id="guestContainer">
+    <div class="welcome-administrator">
+      <h5>Welcome Guest</h5>
+      <div id=iniciar-sesion>
+        <a href="#">Iniciar Sesion</a>
+      </div> 
     </div>
 
-    <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
+  </div>
 
-    </script>
-    
-  </body>
+  <br>
+  <h2 id='title-administracionInventario'>Administracion Inventario</h2>
 
-  <script type="text/javascript">
+  <div class="output" id="table-inputs-guest">          
+    <table >
+      <thead>
+        <tr>
+          <th style="width: 30%; background-color: rgb(104, 145, 162)">Categoria</th>
+          <th style="width: 40%; background-color: rgb(104, 145, 162)">Producto</th>
+          <th style="width: 10%; background-color: rgb(104, 145, 162)">Cantidad</th>
+          <th style="width: 10%; background-color: rgb(104, 145, 162) ">Accion</th>
+          <th style="width: 10%; background-color: rgb(104, 145, 162)"></th>
+        </tr>
+
+      </thead>
+      <tr>
+        <td style="padding: 10px; border-bottom: 5px solid gray; background-color: white">
+          <select id="optionCategoria">
+            <option></option>
+          </select>
+        </td>
+        <td style="padding: 10px; border-bottom: 5px solid gray; background-color: white">
+          <select id="optionProducto">
+            <option></option>
+          </select>
+        </td>
+        <td style="padding: 10px; border-bottom: 5px solid gray; background-color: white">
+          <input id="cantidadInput" type="number" name="" style="width: 100%">
+        </td>
+        <td style="padding: 10px; border-bottom: 5px solid gray; background-color: white">
+          <select id="optionAction">
+            <option></option>
+            <option>Quitar </option>
+            <option>Agregar </option>
+          </select>
+        </td>
+        <td style="padding: 10px; border-bottom: 5px solid gray; background-color: white">
+          <input type="button" name="Enviar" value="Enviar"id="enviar_producto_guest" onClick="enviarProductoGuest()">
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+
+
+  <div style="display: none" class="admin-container" id="display-elemets-container">
+
+    <div class="welcome-administrator">
+      <div id="generar-reporte">
+        <span> Generar reportes </span>
+      </div>
+      <h5>Welcome Admin</h5>
+      <div id=cerrar-sesion>
+        <a href="#">Cerrar Sesion</a>
+      </div> 
+      
+    </div>
+
+    <br>
+    <div>
+    </div>
+
+    <br>
+    <h2>Alta de productos</h2>
+
+
+    <div class="output">          
+      <table id="table-output">
+        <thead>
+          <tr>
+            <!--<th width="15%">Fecha</th> -->
+            <th width="30%">Categoria</th>
+            <th width="30%">Producto</th>
+            <th width="10%">Cantidad Inicial</th>
+            <th width="10%">Recompra</th>
+            <th width="10%"></th>
+            <th width="10%"></th>
+          </tr>
+        </thead>
+
+
+      </table>
+
+    </div>
+  </div>
+
+
+
+  <div style="display: none" class="container" id="login-container">
+    <div class="card card-container">
+      <img id="profile-img" class="profile-img-card" src="user-admin.png">
+      <p id="profile-name" class="profile-name-card"></p>
+
+
+      <form class="form-signin">
+        <span id="reauth-email" class="reauth-email"></span>
+        <input class="form-control" type="text" name="" placeholder="usuario" id="usurname_textField">
+        <input class="form-control" type="password" name="" placeholder="password" id="password_textField">
+        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" id="btn-login">LogIn</button>
+        <button class="btn btn-block" type="submit" id="btn-cancelarInicio">Cancel</button>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+// You can also require other files to run in this process
+require('./renderer.js')
+
+</script>
+
+</body>
+
+<script type="text/javascript">
+
+  var categoriaRowArray =[];
+
+  var mySQL = require("mysql");
+
+
+  var connection = mySQL.createConnection({
+    host:"localhost", 
+    user:"root", 
+    password: "root",
+    database: "inventario_elementos"
+  });
+
+
+  connection.connect((err) => {
+
+    if(err){
+      return alert(err.stack);
+    }
+  });
+
+  $queryString = "SELECT * FROM `inventario-actual`";
+
+
+  connection.query($queryString, (err, rows, fields) => {
+    if(err){
+      return alert("an error occured with the query", err);
+    }
+
+    for (var i = 0; i < rows.length; i++) {
+      categoriaRowArray.push(rows[i].categoria);
+    }
+
+    cargaDatosGuest(categoriaRowArray);
+
+  });
+
+  connection.end(()=> {
+
+  });
+
+
+
+
+
 
   var isLogged = (sessionStorage.username !== undefined);
 
+  document.getElementById('iniciar-sesion').addEventListener("click", function(){
+    document.getElementById('login-container').style.display = "block";
+    document.getElementById('guestContainer').style.display = "none";
+    document.getElementById('title-administracionInventario').style.display = "none";
+    document.getElementById('table-inputs-guest').style.display = "none";
+  });
 
-    
-    if (isLogged) {
-       document.getElementById('login-container').style.display = "none";
-       builtElementsAdmin();
-       document.getElementById('cerrar-sesion').addEventListener("click", ()=> {
-          sessionStorage.clear();
-          location.reload();
+  if (isLogged) {
 
-       });
-    }
-
-    document.getElementById("btn-login").addEventListener("click", (e)=> { 
-        e.preventDefault();
-        verifyLogin();
+    document.getElementById("guestContainer").style.display = "none";
+    document.getElementById("title-administracionInventario").style.display = "none";
+    document.getElementById('login-container').style.display = "none";
+    document.getElementById('table-inputs-guest').style.display = "none";
+    builtElementsAdmin();
+    document.getElementById('generar-reporte').addEventListener("click", ()=> {
+      generarReportes();
     })
-
-    function verifyLogin() {
-
-
-      var mySQL = require("mysql");
-
-
-      var connection = mySQL.createConnection({
-        host:"localhost", 
-        user:"root", 
-        password: "root",
-        database: "loginControlInventario"
-      });
-
-
-      connection.connect((err) => {
-
-        if(err){
-          return alert(err.stack);
-        }
-
-        alert("connection successfully established");
-      });
-
-      //queries 
-
-      $queryString = "SELECT * FROM `usuarios_1`";
-      
-      connection.query($queryString, (err, rows, fields) => {
-        if(err){
-          return alert("an error occured with the query", err);
-        }
-
-        for (var i = 0; i < rows.length; i++) {
-          if(document.getElementById('usurname_textField').value === rows[i].user_name && document.getElementById('password_textField').value === rows[i].password){
-            builtElementsAdmin();
-            sessionStorage.setItem("username", rows[i].user_name);
-
-          } else {
-            alert("password o nombre de usuario incorrectos");
-          }
-        }
-        
-      });
-
-      connection.end(()=> {
-        
-      });
-    };
-
-    
-
-    function builtElementsAdmin() {
-
-      getElementsDB();
-
-      document.getElementById('login-container').style.display = "none";
-      document.getElementById('display-elemets-container').style.display = "block";
-    }
-
-    function getElementsDB() {
-      var mySQL = require("mysql");
-
-
-      var connection = mySQL.createConnection({
-        host:"localhost", 
-        user:"root", 
-        password: "root",
-        database: "inventario_elementos"
-      });
-
-
-      connection.connect((err) => {
-
-        if(err){
-          return alert(err.stack);
-        }
-      });
-
-      $queryString = "SELECT * FROM `inventario-actual`";
-
-
-      connection.query($queryString, (err, rows, fields) => {
-        if(err){
-          return alert("an error occured with the query", err);
-        }
-
-        pintarElementos(rows);
-
-      });
-
-      connection.end(()=> {
-       
-      });
-
-    }
-
-    function pintarElementos(data) {
-
-      for(var i in data) {
-        var node = document.createElement("tr");
-        var nodeFecha = document.createElement("td");
-        var textNodeFecha = document.createTextNode(data[i].fecha);
-        var nodeCategoria = document.createElement("td");
-        var texNodeCategoria = document.createTextNode(data[i].categoria);
-        var nodeDescripcion = document.createElement("td");
-        var textNodeDescripcion = document.createTextNode(data[i].descripcion);
-        var nodeCantidad = document.createElement("td");
-        var texNodeCantidad = document.createTextNode(data[i].cantidad);
-        var nodeRecompra = document.createElement("td");
-        var texNodeRecompra = document.createTextNode(data[i].puntoReaorden);
-        var buttonNodeEditar = document.createElement("td");
-        var spanNode = document.createElement("span");
-        var texNodeSpan = document.createTextNode("Editar");
-        spanNode.appendChild(texNodeSpan);
-        buttonNodeEditar.appendChild(spanNode);
-        spanNode.className = "botton-span-editar";
-        spanNode.id = "editar-"+data[i].ID;
-        nodeCategoria.id = "categ-"+data[i].ID;
-        //nodeDescripcion.id = "descrip-"+data[i].ID;
-        //nodeCantidad.id = "cantidad-"+data[i].ID;
-        //nodeRecompra.id = "recompra-"+data[i].ID;
-
-        spanNode.addEventListener("click", function(event) {
-          editarElemento(event);
-        });
-        var buttonNodeBorrar = document.createElement("td");
-        var spanNodeBorrar = document.createElement("span");
-        var texNodeSpanBorrar = document.createTextNode("Borrar");
-        spanNodeBorrar.appendChild(texNodeSpanBorrar);
-        buttonNodeBorrar.appendChild(spanNodeBorrar);
-        spanNodeBorrar.className = "botton-span-borrar"
-        spanNodeBorrar.id = "borrar-"+data[i].ID;
-        spanNodeBorrar.addEventListener("click", function(event) {
-          
-          borrarElemento(event);
-
-        });
-
-        nodeCategoria.appendChild(texNodeCategoria);
-        nodeDescripcion.appendChild(textNodeDescripcion);
-        nodeCantidad.appendChild(texNodeCantidad);
-        nodeRecompra.appendChild(texNodeRecompra);
-        nodeFecha.appendChild(textNodeFecha);
-
-        node.appendChild(nodeFecha);
-        node.appendChild(nodeCategoria);
-        node.appendChild(nodeDescripcion);
-        node.appendChild(nodeCantidad);
-        node.appendChild(nodeRecompra);
-        node.appendChild(buttonNodeEditar);
-        node.appendChild(buttonNodeBorrar);
-
-
-        node.className = "row-data";
-
-        document.getElementById('table-output').appendChild(node);
-      }
-        
-        var node1 = document.createElement("tr");
-        var nodeFecha1 = document.createElement("td");
-        nodeFecha1.style.padding = "10px";
-        var textFieldFecha = document.createElement("input");
-        var nodeCategoria1 = document.createElement("td");
-        nodeCategoria1.padding = "10px";
-        var textFieldCategoria = document.createElement("input")
-        var nodeDescripcion1 = document.createElement("td");
-        nodeDescripcion1.style.padding = "10px";
-        var textFieldDescripcion = document.createElement("input");
-        var nodeCantidad1 = document.createElement("td");
-        nodeCantidad1.style.padding = "10px";
-        var textFieldCantidad = document.createElement("input");
-        var nodeRecompra1 = document.createElement("td");
-        nodeRecompra1.style.padding = "10px";
-        var textFieldRecompra = document.createElement("input");
-       
-
-        textFieldCategoria.id = "textFieldCategoriaId";
-        textFieldDescripcion.id = "textFieldDescripcionId";
-        textFieldCantidad.id = "textFieldCantidadId";
-        textFieldRecompra.id = "textFieldRecompraId";
-        textFieldFecha.id = "textFieldFecha";
-        textFieldFecha.style.visibility = "hidden";
-
-        nodeCategoria1.appendChild(textFieldCategoria);
-        nodeDescripcion1.appendChild(textFieldDescripcion);
-        nodeCantidad1.appendChild(textFieldCantidad);
-        nodeRecompra1.appendChild(textFieldRecompra);
-        nodeFecha1.appendChild(textFieldFecha);
-
-        node1.appendChild(nodeFecha1);
-        node1.appendChild(nodeCategoria1);
-        node1.appendChild(nodeDescripcion1);
-        node1.appendChild(nodeCantidad1);
-        node1.appendChild(nodeRecompra1);
-        node1.className = "row-data";
-
-        var buttonNodeAgregar = document.createElement("td");
-        buttonNodeAgregar.colSpan = 2;
-        var spanNode1 = document.createElement("span");
-        var texNodeSpan1 = document.createTextNode("Agregar");
-        spanNode1.appendChild(texNodeSpan1);
-        buttonNodeAgregar.appendChild(spanNode1);
-        spanNode1.id = "add-element-button";
-        spanNode1.addEventListener("click", function(event) {
-          agregarData(event);
-        });
-
-        node1.style.borderTop = "5px solid black";
-        node1.appendChild(buttonNodeAgregar);
-
-        document.getElementById('table-output').appendChild(node1);
-
-    }
-
-    function agregarData(){
-      
-      var mySQL = require("mysql");
-
-      var connection = mySQL.createConnection({
-        host:"localhost", 
-        user:"root", 
-        password: "root",
-        database: "inventario_elementos"
-      });
-
-      connection.connect((err) => {
-
-        if(err){
-          return alert(err.stack);
-        }
-      });
-
-
-      var dataTextFieldCategoria = document.getElementById('textFieldCategoriaId').value;
-      var dataTextFieldDescripcion = document.getElementById('textFieldDescripcionId').value;
-      var dataTexFieldCantidad = document.getElementById('textFieldCantidadId').value;
-      var dataTextFieldPuntoReorden = document.getElementById('textFieldRecompraId').value;
-      var dateNow = new Date();
-      var dateInserted = dateNow.getDate()+"/"+ dateNow.getMonth() + "/"+ dateNow.getFullYear();
-
-      $queryString = "INSERT INTO `inventario-actual` (`ID`, `categoria`, `descripcion`, `cantidad`, `fecha`, `puntoReaorden`) VALUES (NULL, '"+dataTextFieldCategoria+"', '"+dataTextFieldDescripcion+"', '"+dataTexFieldCantidad+"', '"+dateInserted +"', '"+dataTextFieldPuntoReorden+"');"
-
-      connection.query($queryString, (err, rows, fields) => {
-        if(err){
-          return alert("an error occured with the query", err);
-        }
-
-      });
-
-      connection.end(()=> {
-       
-      });
-
-      location.reload();      
-      
-    }
-
-
-    function editarElemento(e){
-
-
-      var idsElementosTabla = [];
-
-      var numeroElementosTabla = document.getElementById('table-output').children.length-2;
-
-
-      for (var i = 1; i <= numeroElementosTabla; i++) {
-        var textToVerify = document.getElementById('table-output').children[i].innerHTML;
-        var indexOfTextToVerify = textToVerify.indexOf('id="');
-        var subtringTextToVerify = textToVerify.substring(indexOfTextToVerify+10);
-        var subtringTextToVerify2 = subtringTextToVerify.substring(0, subtringTextToVerify.indexOf('"'));
-
-        idsElementosTabla.push(subtringTextToVerify2);
-      }
-
-      for (var z = 0; z < idsElementosTabla.length; z++) {
-        
-        if(e.target.id.substring(7) === idsElementosTabla[z]){
-
-          var idToCheck = e.target.id.substring(7)
-          
-          var rowToUpdate = document.getElementById('table-output').children[z+1];
-          var tdCategoriaUpdate = document.createElement("td");
-          var valueFromCategoriaBefore = rowToUpdate.children[1].innerHTML;
-          var nodeTextFieldCategoria = document.createElement('input');
-          nodeTextFieldCategoria.value = valueFromCategoriaBefore;
-          nodeTextFieldCategoria.id = "nodeTextCat";
-          tdCategoriaUpdate.appendChild(nodeTextFieldCategoria);
-          rowToUpdate.removeChild(rowToUpdate.children[1]);
-          rowToUpdate.insertBefore(tdCategoriaUpdate, rowToUpdate.childNodes[1]);
-
-          var tdProductoUpdate = document.createElement("td");
-          var valueFromProductoBefore = rowToUpdate.children[2].innerHTML;
-          var nodeTextFieldProducto = document.createElement('input');
-          nodeTextFieldProducto.value = valueFromProductoBefore;
-          nodeTextFieldProducto.id = "nodeTextFielProd";
-          tdProductoUpdate.appendChild(nodeTextFieldProducto);
-          rowToUpdate.removeChild(rowToUpdate.children[2]);
-          rowToUpdate.insertBefore(tdProductoUpdate, rowToUpdate.childNodes[2]);
-          
-          var tdCantidadUpdate = document.createElement("td");
-          var valueFromCantidadBefore = rowToUpdate.children[3].innerHTML;
-          var nodeTextFieldCantidad = document.createElement('input');
-          nodeTextFieldCantidad.value = valueFromCantidadBefore;
-          nodeTextFieldCantidad.id = "nodeTextFieldCant";
-          tdCantidadUpdate.appendChild(nodeTextFieldCantidad);
-          rowToUpdate.removeChild(rowToUpdate.children[3]);
-          rowToUpdate.insertBefore(tdCantidadUpdate, rowToUpdate.childNodes[3]);
-
-          var tdRecompraUpdate = document.createElement("td");
-          var valueFromRecompraBefore = rowToUpdate.children[4].innerHTML;
-          var nodeTextFieldRecompra = document.createElement('input');
-          nodeTextFieldRecompra.value = valueFromRecompraBefore;
-          nodeTextFieldRecompra.id = "nodeTexFieldRec";
-          tdRecompraUpdate.appendChild(nodeTextFieldRecompra);
-          rowToUpdate.removeChild(rowToUpdate.children[4]);
-          rowToUpdate.insertBefore(tdRecompraUpdate, rowToUpdate.childNodes[4]);
-
-          var tdBotonAcepatarUpdate = document.createElement("td");
-          var BotonAceptarNode = document.createElement('span');
-          var botonTextNodeAceptar = document.createTextNode("Aceptar");
-          BotonAceptarNode.appendChild(botonTextNodeAceptar);
-          BotonAceptarNode.setAttribute("class", "Btn-Aceptar");
-          BotonAceptarNode.addEventListener("click", function(){
-            updateCambios(idToCheck);
-          });
-          tdBotonAcepatarUpdate.appendChild(BotonAceptarNode);
-          rowToUpdate.removeChild(rowToUpdate.children[5]);
-          rowToUpdate.insertBefore(tdBotonAcepatarUpdate, rowToUpdate.childNodes[5]);
-         
-          var tdBotonCancelarUpdate = document.createElement("td");
-          var BotonCancelarNode = document.createElement('span');
-          var botonTextNodeCancelar = document.createTextNode("Cancelar");
-          BotonCancelarNode.appendChild(botonTextNodeCancelar);
-          BotonCancelarNode.setAttribute("class", "Btn-cancelar");
-          BotonCancelarNode.addEventListener("click", function(){
-            refreshBrowser();
-          });
-          tdBotonCancelarUpdate.appendChild(BotonCancelarNode);
-          rowToUpdate.removeChild(rowToUpdate.children[6]);
-          rowToUpdate.insertBefore(tdBotonCancelarUpdate, rowToUpdate.childNodes[6]);
-
-        }
-      }
-      
-
-      //location.reload();  
-
-    }
-
-
-    function updateCambios(id) {
-
-      var mySQL = require("mysql");
-
-      var connection = mySQL.createConnection({
-        host:"localhost", 
-        user:"root", 
-        password: "root",
-        database: "inventario_elementos"
-      });
-
-      connection.connect((err) => {
-
-        if(err){
-          return alert(err.stack);
-        }
-      });
-
-       $queryString = "UPDATE `inventario-actual` SET `ID`="+ id+",`categoria`='"+document.getElementById("nodeTextCat").value+"',`descripcion`='"+document.getElementById('nodeTextFielProd').value+"',`cantidad`= "+document.getElementById('nodeTextFieldCant').value+",`fecha`='updated3',`puntoReaorden`="+document.getElementById("nodeTexFieldRec").value+" WHERE `ID` ="+id+"";
-
-      connection.query($queryString, (err, rows, fields) => {
-        if(err){
-          return alert("an error occured with the query", err);
-        }
-
-      });
-
-
-       connection.end(()=> {
-       
-      });
-
+    document.getElementById('cerrar-sesion').addEventListener("click", ()=> {
+      sessionStorage.clear();
       location.reload();
+
+    });
+  }
+
+  document.getElementById("btn-cancelarInicio").addEventListener("click", (e)=> {
+    e.preventDefault();
+    location.reload();
+  });
+
+  document.getElementById("btn-login").addEventListener("click", (e)=> { 
+    e.preventDefault();
+    verifyLogin();
+  });
+
+  function verifyLogin() {
+
+
+    var mySQL = require("mysql");
+
+
+    var connection = mySQL.createConnection({
+      host:"localhost", 
+      user:"root", 
+      password: "root",
+      database: "loginControlInventario"
+    });
+
+
+    connection.connect((err) => {
+
+      if(err){
+        return alert(err.stack);
+      }
+
+      alert("connection successfully established");
+    });
+
+//queries 
+
+$queryString = "SELECT * FROM `usuarios_1`";
+
+connection.query($queryString, (err, rows, fields) => {
+  if(err){
+    return alert("an error occured with the query", err);
+  }
+
+  for (var i = 0; i < rows.length; i++) {
+    if(document.getElementById('usurname_textField').value === rows[i].user_name && document.getElementById('password_textField').value === rows[i].password){
+      builtElementsAdmin();
+      sessionStorage.setItem("username", rows[i].user_name);
+
+    } else {
+      alert("password o nombre de usuario incorrectos");
+    }
+  }
+
+});
+
+location.reload();
+
+connection.end(()=> {
+
+});
+};
+
+
+
+function builtElementsAdmin() {
+
+  getElementsDB();
+
+  document.getElementById('login-container').style.display = "none";
+  document.getElementById('display-elemets-container').style.display = "block";
+}
+
+function getElementsDB() {
+  var mySQL = require("mysql");
+
+
+  var connection = mySQL.createConnection({
+    host:"localhost", 
+    user:"root", 
+    password: "root",
+    database: "inventario_elementos"
+  });
+
+
+  connection.connect((err) => {
+
+    if(err){
+      return alert(err.stack);
+    }
+  });
+
+  $queryString = "SELECT * FROM `inventario-actual`";
+
+
+  connection.query($queryString, (err, rows, fields) => {
+    if(err){
+      return alert("an error occured with the query", err);
     }
 
-    function refreshBrowser() {
-      location.reload();
+    pintarElementos(rows);
+
+  });
+
+  connection.end(()=> {
+
+  });
+
+}
+
+function pintarElementos(data) {
+
+  for(var i in data) {
+    var node = document.createElement("tr");
+    //var nodeFecha = document.createElement("td");
+   // var textNodeFecha = document.createTextNode(data[i].fecha);
+    var nodeCategoria = document.createElement("td");
+    var texNodeCategoria = document.createTextNode(data[i].categoria);
+    var nodeDescripcion = document.createElement("td");
+    var textNodeDescripcion = document.createTextNode(data[i].descripcion);
+    var nodeCantidad = document.createElement("td");
+    var texNodeCantidad = document.createTextNode(data[i].cantidad);
+    var nodeRecompra = document.createElement("td");
+    var texNodeRecompra = document.createTextNode(data[i].puntoReaorden);
+    var buttonNodeEditar = document.createElement("td");
+    var spanNode = document.createElement("span");
+    var texNodeSpan = document.createTextNode("Editar");
+    spanNode.appendChild(texNodeSpan);
+    buttonNodeEditar.appendChild(spanNode);
+    spanNode.className = "botton-span-editar";
+    spanNode.id = "editar-"+data[i].ID;
+    nodeCategoria.id = "categ-"+data[i].ID;
+    //nodeFecha.id = "fecha-"+data[i].ID;
+//nodeDescripcion.id = "descrip-"+data[i].ID;
+//nodeCantidad.id = "cantidad-"+data[i].ID;
+//nodeRecompra.id = "recompra-"+data[i].ID;
+
+spanNode.addEventListener("click", function(event) {
+  editarElemento(event);
+});
+var buttonNodeBorrar = document.createElement("td");
+var spanNodeBorrar = document.createElement("span");
+var texNodeSpanBorrar = document.createTextNode("Borrar");
+spanNodeBorrar.appendChild(texNodeSpanBorrar);
+buttonNodeBorrar.appendChild(spanNodeBorrar);
+spanNodeBorrar.className = "botton-span-borrar"
+spanNodeBorrar.id = "borrar-"+data[i].ID;
+spanNodeBorrar.addEventListener("click", function(event) {
+
+  borrarElemento(event);
+
+});
+
+nodeCategoria.appendChild(texNodeCategoria);
+nodeDescripcion.appendChild(textNodeDescripcion);
+nodeCantidad.appendChild(texNodeCantidad);
+nodeRecompra.appendChild(texNodeRecompra);
+//nodeFecha.appendChild(textNodeFecha);
+
+//node.appendChild(nodeFecha);
+node.appendChild(nodeCategoria);
+node.appendChild(nodeDescripcion);
+node.appendChild(nodeCantidad);
+node.appendChild(nodeRecompra);
+node.appendChild(buttonNodeEditar);
+node.appendChild(buttonNodeBorrar);
+
+
+node.className = "row-data";
+
+document.getElementById('table-output').appendChild(node);
+}
+
+var node1 = document.createElement("tr");
+//var nodeFecha1 = document.createElement("td");
+//nodeFecha1.style.padding = "10px";
+//var textFieldFecha = document.createElement("input");
+var nodeCategoria1 = document.createElement("td");
+nodeCategoria1.padding = "10px";
+var textFieldCategoria = document.createElement("input")
+var nodeDescripcion1 = document.createElement("td");
+nodeDescripcion1.style.padding = "10px";
+var textFieldDescripcion = document.createElement("input");
+var nodeCantidad1 = document.createElement("td");
+nodeCantidad1.style.padding = "10px";
+var textFieldCantidad = document.createElement("input");
+var nodeRecompra1 = document.createElement("td");
+nodeRecompra1.style.padding = "10px";
+var textFieldRecompra = document.createElement("input");
+
+
+textFieldCategoria.id = "textFieldCategoriaId";
+textFieldDescripcion.id = "textFieldDescripcionId";
+textFieldCantidad.id = "textFieldCantidadId";
+textFieldRecompra.id = "textFieldRecompraId";
+//textFieldFecha.id = "textFieldFecha";
+//textFieldFecha.style.visibility = "hidden";
+
+nodeCategoria1.appendChild(textFieldCategoria);
+nodeDescripcion1.appendChild(textFieldDescripcion);
+nodeCantidad1.appendChild(textFieldCantidad);
+nodeRecompra1.appendChild(textFieldRecompra);
+//nodeFecha1.appendChild(textFieldFecha);
+
+//node1.appendChild(nodeFecha1);
+node1.appendChild(nodeCategoria1);
+node1.appendChild(nodeDescripcion1);
+node1.appendChild(nodeCantidad1);
+node1.appendChild(nodeRecompra1);
+node1.className = "row-data";
+
+var buttonNodeAgregar = document.createElement("td");
+buttonNodeAgregar.colSpan = 2;
+var spanNode1 = document.createElement("span");
+var texNodeSpan1 = document.createTextNode("Agregar");
+spanNode1.appendChild(texNodeSpan1);
+buttonNodeAgregar.appendChild(spanNode1);
+spanNode1.id = "add-element-button";
+spanNode1.addEventListener("click", function(event) {
+  agregarData(event);
+});
+
+node1.style.borderTop = "5px solid black";
+node1.appendChild(buttonNodeAgregar);
+
+document.getElementById('table-output').appendChild(node1);
+
+}
+
+function agregarData(){
+
+  var mySQL = require("mysql");
+
+  var connection = mySQL.createConnection({
+    host:"localhost", 
+    user:"root", 
+    password: "root",
+    database: "inventario_elementos"
+  });
+
+  connection.connect((err) => {
+
+    if(err){
+      return alert(err.stack);
+    }
+  });
+
+
+  var dataTextFieldCategoria = document.getElementById('textFieldCategoriaId').value;
+  var dataTextFieldDescripcion = document.getElementById('textFieldDescripcionId').value;
+  var dataTexFieldCantidad = document.getElementById('textFieldCantidadId').value;
+  var dataTextFieldPuntoReorden = document.getElementById('textFieldRecompraId').value;
+  var dateNow = new Date();
+  var dateInserted = dateNow.getDate()+"/"+ dateNow.getMonth() + "/"+ dateNow.getFullYear();
+
+  $queryString = "INSERT INTO `inventario-actual` (`ID`, `categoria`, `descripcion`, `cantidad`, `fecha`, `puntoReaorden`) VALUES (NULL, '"+dataTextFieldCategoria+"', '"+dataTextFieldDescripcion+"', '"+dataTexFieldCantidad+"', '"+dateInserted +"', '"+dataTextFieldPuntoReorden+"');"
+
+  connection.query($queryString, (err, rows, fields) => {
+    if(err){
+      return alert("an error occured with the query", err);
     }
 
-    function borrarElemento(e){
-      var resp = confirm("seguro que deseas borrar elemento?");
-        
-      if(resp){
+  });
+
+  connection.end(()=> {
+
+  });
+
+  location.reload();      
+
+}
+
+
+function editarElemento(e){
+
+
+  var idsElementosTabla = [];
+
+  var numeroElementosTabla = document.getElementById('table-output').children.length-2;
+
+  for (var i = 1; i <= numeroElementosTabla; i++) {
+    var textToVerify = document.getElementById('table-output').children[i].innerHTML;
+    var indexOfTextToVerify = textToVerify.indexOf('id="');
+    var subtringTextToVerify = textToVerify.substring(indexOfTextToVerify+10);
+    var subtringTextToVerify2 = subtringTextToVerify.substring(0, subtringTextToVerify.indexOf('"'));
+    idsElementosTabla.push(subtringTextToVerify2);
+  }
+
+
+  for (var z = 0; z < idsElementosTabla.length; z++) {
+
+    if(e.target.id.substring(7) === idsElementosTabla[z]){
+
+      var idToCheck = e.target.id.substring(7)
+      var rowToUpdate = document.getElementById('table-output').children[z+1];
+      //var tdFechaUpdate = document.createElement("td");
+      //var valueFromFechaBefore = rowToUpdate.children[0].innerHTML;
+      //tdFechaUpdate.innerHTML = valueFromFechaBefore;
+      //tdFechaUpdate.id = "textFechaNoUpdated";
+      //rowToUpdate.removeChild(rowToUpdate.children[0]);
+      //rowToUpdate.insertBefore(tdFechaUpdate, rowToUpdate.childNodes[0]);
+
+      var tdCategoriaUpdate = document.createElement("td");
+      var valueFromCategoriaBefore = rowToUpdate.children[0].innerHTML;
+      var nodeTextFieldCategoria = document.createElement('input');
+      nodeTextFieldCategoria.value = valueFromCategoriaBefore;
+      nodeTextFieldCategoria.id = "nodeTextCat";
+      tdCategoriaUpdate.appendChild(nodeTextFieldCategoria);
+      rowToUpdate.removeChild(rowToUpdate.children[0]);
+      rowToUpdate.insertBefore(tdCategoriaUpdate, rowToUpdate.childNodes[0]);
+
+      var tdProductoUpdate = document.createElement("td");
+      var valueFromProductoBefore = rowToUpdate.children[1].innerHTML;
+      var nodeTextFieldProducto = document.createElement('input');
+      nodeTextFieldProducto.value = valueFromProductoBefore;
+      nodeTextFieldProducto.id = "nodeTextFielProd";
+      tdProductoUpdate.appendChild(nodeTextFieldProducto);
+      rowToUpdate.removeChild(rowToUpdate.children[1]);
+      rowToUpdate.insertBefore(tdProductoUpdate, rowToUpdate.childNodes[1]);
+
+      var tdCantidadUpdate = document.createElement("td");
+      var valueFromCantidadBefore = rowToUpdate.children[2].innerHTML;
+      var nodeTextFieldCantidad = document.createElement('input');
+      nodeTextFieldCantidad.value = valueFromCantidadBefore;
+      nodeTextFieldCantidad.id = "nodeTextFieldCant";
+      tdCantidadUpdate.appendChild(nodeTextFieldCantidad);
+      rowToUpdate.removeChild(rowToUpdate.children[2]);
+      rowToUpdate.insertBefore(tdCantidadUpdate, rowToUpdate.childNodes[2]);
+
+      var tdRecompraUpdate = document.createElement("td");
+      var valueFromRecompraBefore = rowToUpdate.children[3].innerHTML;
+      var nodeTextFieldRecompra = document.createElement('input');
+      nodeTextFieldRecompra.value = valueFromRecompraBefore;
+      nodeTextFieldRecompra.id = "nodeTexFieldRec";
+      tdRecompraUpdate.appendChild(nodeTextFieldRecompra);
+      rowToUpdate.removeChild(rowToUpdate.children[3]);
+      rowToUpdate.insertBefore(tdRecompraUpdate, rowToUpdate.childNodes[3]);
+
+      var tdBotonAcepatarUpdate = document.createElement("td");
+      var BotonAceptarNode = document.createElement('span');
+      var botonTextNodeAceptar = document.createTextNode("Aceptar");
+      BotonAceptarNode.appendChild(botonTextNodeAceptar);
+      BotonAceptarNode.setAttribute("class", "Btn-Aceptar");
+      BotonAceptarNode.addEventListener("click", function(){
+        updateCambios(idToCheck);
+      });
+      tdBotonAcepatarUpdate.appendChild(BotonAceptarNode);
+      rowToUpdate.removeChild(rowToUpdate.children[4]);
+      rowToUpdate.insertBefore(tdBotonAcepatarUpdate, rowToUpdate.childNodes[4]);
+
+      var tdBotonCancelarUpdate = document.createElement("td");
+      var BotonCancelarNode = document.createElement('span');
+      var botonTextNodeCancelar = document.createTextNode("Cancelar");
+      BotonCancelarNode.appendChild(botonTextNodeCancelar);
+      BotonCancelarNode.setAttribute("class", "Btn-cancelar");
+      BotonCancelarNode.addEventListener("click", function(){
+        refreshBrowser();
+      });
+      tdBotonCancelarUpdate.appendChild(BotonCancelarNode);
+      rowToUpdate.removeChild(rowToUpdate.children[5]);
+      rowToUpdate.insertBefore(tdBotonCancelarUpdate, rowToUpdate.childNodes[5]);
+
+
+
+    }
+  }
+
+
+//location.reload();  
+
+}
+
+
+function updateCambios(id) {
+
+  var mySQL = require("mysql");
+
+  var connection = mySQL.createConnection({
+    host:"localhost", 
+    user:"root", 
+    password: "root",
+    database: "inventario_elementos"
+  });
+
+  connection.connect((err) => {
+
+    if(err){
+      return alert(err.stack);
+    }
+  });
+
+
+  $queryString = "UPDATE `inventario-actual` SET `ID`="+ id+",`categoria`='"+document.getElementById("nodeTextCat").value+"',`descripcion`='"+document.getElementById('nodeTextFielProd').value+"',`cantidad`= "+document.getElementById('nodeTextFieldCant').value+",`puntoReaorden`="+document.getElementById("nodeTexFieldRec").value+" WHERE `ID` ="+id+"";
+
+  connection.query($queryString, (err, rows, fields) => {
+    if(err){
+      return alert("an error occured with the query", err);
+    }
+
+  });
+
+
+  connection.end(()=> {
+
+  });
+
+  location.reload();
+}
+
+function refreshBrowser() {
+  location.reload();
+}
+
+function borrarElemento(e){
+  var resp = confirm("seguro que deseas borrar elemento?");
+
+  if(resp){
+    var mySQL = require("mysql");
+
+    var connection = mySQL.createConnection({
+      host:"localhost", 
+      user:"root", 
+      password: "root",
+      database: "inventario_elementos"
+    });
+
+    connection.connect((err) => {
+
+      if(err){
+        return alert(err.stack);
+      }
+    });
+    $queryString = "DELETE FROM `inventario-actual` WHERE `ID`="+e.target.id.substring(7);
+    connection.query($queryString);
+    location.reload();
+  } 
+}
+
+function cargaDatosGuest (carga1){
+
+
+  var words = carga1;
+
+  const result = words.filter(onlyUnique); 
+
+
+  for (var j = 0; j < result.length; j++) {
+    var NodeForCategoria = document.createElement('option');
+    var textCategoria2 = result[j];
+    NodeForCategoria.innerHTML = textCategoria2;
+    document.getElementById('optionCategoria').appendChild(NodeForCategoria);
+  }
+
+
+  document.getElementById('optionCategoria').addEventListener("change" , function() {
+
+    while(document.getElementById('optionProducto').firstChild){
+
+      document.getElementById('optionProducto').removeChild(document.getElementById('optionProducto').firstChild);
+
+    }
+
+
+
+    var opcionesCategoria = document.getElementById('optionCategoria');
+    var valorOpcionesCategoria = optionCategoria.options[opcionesCategoria.selectedIndex].value;
+    var valoresProductoCorrespondientes = [];
+    var mySQL = require("mysql");
+
+    var connection = mySQL.createConnection({
+      host:"localhost", 
+      user:"root", 
+      password: "root",
+      database: "inventario_elementos"
+    });
+
+    connection.connect((err) => {
+
+      if(err){
+        return alert(err.stack);
+      }
+    });
+
+
+
+    $queryString = "SELECT * FROM `inventario-actual` WHERE `categoria` = '"+valorOpcionesCategoria+"'";
+
+
+    connection.query($queryString, (err, rows, fields) => {
+      if(err){
+        return alert("an error occured with the query", err);
+      }
+
+      for (var m = 0; m < rows.length; m++) {
+        valoresProductoCorrespondientes.push(rows[m].descripcion);
+      }
+
+
+
+
+      for (var n = 0; n < valoresProductoCorrespondientes.length; n++) {
+        var NodeForProductos = document.createElement('option');
+        var textProductos2 = valoresProductoCorrespondientes[n];
+        NodeForProductos.innerHTML = textProductos2;
+        document.getElementById('optionProducto').appendChild(NodeForProductos);
+      }
+
+
+
+    });
+
+
+    connection.end(()=> {
+
+    });
+  });
+
+} 
+
+function onlyUnique(value, index, self) { 
+  return self.indexOf(value) === index;
+} 
+
+function enviarProductoGuest() {
+
+  var valorCategoriaGuest = document.getElementById("optionCategoria").value;
+  var valorProductoGuest = document.getElementById("optionProducto").value;
+  var valorCantidadGuest = document.getElementById("cantidadInput").value;
+  var accionGuest = document.getElementById("optionAction").value;
+
+
+
+  if(valorCategoriaGuest === '' || valorProductoGuest === '' || valorCantidadGuest === '' || accionGuest === '' || valorCantidadGuest == 0 || valorCantidadGuest < 0 ) {
+
+    alert("Favor de llenar los campos correctamente");
+  } else {
+    if (accionGuest === "Quitar" || accionGuest === "Agregar") {
+      var confirm1 = confirm("Deseas modificar producto de la base de datos?");
+
+      if(confirm1){
         var mySQL = require("mysql");
 
-        var connection = mySQL.createConnection({
-          host:"localhost", 
-          user:"root", 
-          password: "root",
-          database: "inventario_elementos"
-        });
+          var connection = mySQL.createConnection({
+            host:"localhost", 
+            user:"root", 
+            password: "root",
+            database: "inventario_elementos"
+          });
 
-        connection.connect((err) => {
+          connection.connect((err) => {
+            if(err){
+              return alert(err.stack);
+            }
+          });
 
-         if(err){
-            return alert(err.stack);
-          }
-        });
-        console.log(e.target.id.substring(7));
-        $queryString = "DELETE FROM `inventario-actual` WHERE `ID`="+e.target.id.substring(7);
-        connection.query($queryString);
-        location.reload();
-      } 
+          $queryString1 = "SELECT `descripcion`, `fecha`, `cantidad` FROM `inventario-actual` WHERE `categoria` = '"+valorCategoriaGuest+"'"
+          connection.query($queryString1, (err, rows, fields) => {
+
+            if(err){
+              return alert("an error occured with the query", err);
+            }
+
+
+            for(var x in rows) {
+
+              if(rows[x].descripcion === valorProductoGuest){
+
+                var d = new Date();
+                var fechaToUpdate = String(d.getDate());
+                var fechaBefore = "";
+                var cantidadBefore =0;
+                var mesToUpdate = String(d.getMonth()+1);
+                var anoToUpdate = String(d.getFullYear()).substring(2,4);
+                var hourToUpdate = String(d.getHours());
+                var minuteToUpdate = String(d.getMinutes());
+
+                //console.log(rows[x].fecha+"1305180434");
+                fechaBefore = rows[x].fecha;
+                cantidadBefore = rows[x].cantidad;
+
+                if (fechaToUpdate.length == 1) {
+                  fechaToUpdate = "0"+fechaToUpdate;
+                }
+
+                if (mesToUpdate.length == 1) { 
+                  mesToUpdate = "0"+mesToUpdate;
+
+                }
+                if(hourToUpdate.length == 1) {
+                  hourToUpdate = "0"+hourToUpdate;
+                }
+                if(minuteToUpdate.length == 1) {
+                  minuteToUpdate = "0"+minuteToUpdate;
+                }
+
+                var fechaToUpdateCompleta = fechaToUpdate+mesToUpdate+anoToUpdate+hourToUpdate+minuteToUpdate;
+
+
+                if(accionGuest === "Quitar") {valorCantidadGuest *= -1}; 
+                updateNewChanges(fechaBefore, fechaToUpdateCompleta, Number(valorCantidadGuest)+Number(cantidadBefore), valorProductoGuest, valorCategoriaGuest);
+
+              }
+            }
+
+          });
+
+          connection.end(()=> {
+          });
+
+          location.reload();
+      }
+    } 
+
+  }
+
+} 
+
+
+function updateNewChanges(fecha1, fecha2, cantidad, producto, categoria) {
+
+  var mySQL = require("mysql");
+
+
+  var connection = mySQL.createConnection({
+    host:"localhost", 
+    user:"root", 
+    password: "root",
+    database: "inventario_elementos"
+  });
+
+
+  connection.connect((err) => {
+
+    if(err){
+      return alert(err.stack);
     }
+  });
 
-     
+   $queryString = "UPDATE `inventario-actual` SET `cantidad`="+cantidad+",`fecha`='"+fecha1+fecha2+"' WHERE `categoria` = '"+categoria+"' && `descripcion` = '"+producto+"'";
+   connection.query($queryString, (err, rows, fields) => {
+     if(err){
+       return alert("an error occured with the query", err);
+     } 
 
-  </script>
+   });
+
+}
+
+
+function generarReportes(){
+  document.querySelector("#table-output").style.display = "none";
+  console.log(document.querySelector("h2"))
+}
+
+
+// location.reload();     
+
+
+</script>
 </html>
